@@ -27,8 +27,8 @@ TactiSim is a C++ project designed to simulate 2D tactical scenarios. It allows 
 
 ## 🛠️ Technologies Used
 
-*   **Language:** C++ (targeting C++17 or newer)
-*   **IDE:** Microsoft Visual Studio (e.g., 2019, 2022)
+*   **Language:** C++17
+*   **IDE:** Microsoft Visual Studio 2022
 *   **Build System:** MSBuild (via Visual Studio Project/Solution)
 *   **Graphics/Windowing:** SFML 3.0
 *   **Version Control:** Git
