@@ -6,7 +6,7 @@ Map::Map(int numTilesX, int numTilesY, int tileSize) :
     mapSizeInTiles_{numTilesX, numTilesY},
     tileSize_{tileSize}
 {
-    if (numTilesX == 0 || numTilesY == 0 || tileSize == 0)
+    if (numTilesX <= 0 || numTilesY <= 0 || tileSize <= 0)
     {
         std::cerr << "ERROR: Map dimensions or tile size cannot be zero!" << std::endl;
         return;

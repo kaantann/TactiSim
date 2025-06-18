@@ -8,12 +8,11 @@ class Game
 {
 public:
 	explicit Game();
-
 	void run();
 
 private:
 	void setupInitialUnits();
-	void processEvents(); // To handle SFML events (input, window close, etc.)
+	void processEvents(); // To handle SFML events
 	void update(sf::Time deltaTime);
 	void render();
 
@@ -21,10 +20,8 @@ private:
 	//Fields
 	sf::RenderWindow window_;      
 	Map gameMap_;                  
-	UnitManager unitManager_;      
-
-
-
+	UnitManager unitManager_;
+	Unit* selectedUnit_;
 
 };
 

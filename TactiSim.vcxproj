@@ -138,13 +138,16 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MoveCommand.cpp" />
     <ClCompile Include="Unit.cpp" />
     <ClCompile Include="UnitManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Command.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="Unit.h" />
     <ClInclude Include="UnitManager.h" />
   </ItemGroup>
