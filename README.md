@@ -49,11 +49,10 @@ TactiSim is a C++ project designed to simulate 2D tactical scenarios. It allows 
     ```
     
 2.  **Build the Solution:**
-    *   From the Visual Studio menu, select `Build > Build Solution` (or press `Ctrl+Shift+B`).
+    *   From the Visual Studio menu, select `Build > Build Solution`.
 
 3.  **Run the Executable:**
-    *   You can run the project directly from Visual Studio by pressing `F5` (Start Debugging) or `Ctrl+F5` (Start Without Debugging).
-    *   Alternatively, the executable (`.exe`) will be located in a subdirectory like `x64/Debug/`, `x64/Release/`, `Win32/Debug/`, or `Win32/Release/` relative to your solution or project directory.
+    *   The executable will be located in a subdirectory like `x64/Debug/`, `x64/Release/`, `Win32/Debug/`, or `Win32/Release/` relative to your solution or project directory.
 
 ## 🤝 Contribution
 
