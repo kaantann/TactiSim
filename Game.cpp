@@ -1,6 +1,7 @@
 #include "Config.h"
 #include "Game.h"
 #include "MoveCommand.h"
+#include "AttackCommand.h"
 #include <iostream> // For debug output
 
 Game::Game() :
@@ -20,17 +21,19 @@ Game::Game() :
 		<< TILE_SIZE << "px per tile." << std::endl;
 	std::cout << "Window size: " << window_.getSize().x << "x" << window_.getSize().y << " pixels." << std::endl;
 
-	// Place some initial units for testing Phase 1
 	setupInitialUnits();
 }
 
 void Game::setupInitialUnits()
 {
-	// Example: Place a friendly infantry unit near the top-left
+	Unit::Stats infantryStats{}; // Uses defaults
+	Unit::Stats tankStats{200, 200, 25, 75.0f, 3.0f,200.0f}; // MaxHP, CurHP, Atk, AtkRange, Cooldown, VisionRange
+
+	//Unit1
 	sf::Vector2f unit1Pos = gameMap_.tileToPixelCenter(3, 3);
 	if (gameMap_.isWalkable(3, 3))
-	{ // Check if tile is walkable before placing
-		unitManager_.addUnit(UnitType::INFANTRY, Faction::FRIENDLY, unit1Pos);
+	{ 
+		unitManager_.addUnit(UnitType::INFANTRY, Faction::FRIENDLY, unit1Pos, infantryStats);
 		std::cout << "Added FRIENDLY INFANTRY at tile (3,3) -> pixel " << unit1Pos.x << "," << unit1Pos.y << std::endl;
 	}
 	else
@@ -38,12 +41,11 @@ void Game::setupInitialUnits()
 		std::cout << "Could not place unit at tile (3,3) - not walkable." << std::endl;
 	}
 
-
-	// Example: Place an enemy tank unit further into the map
+	//Unit2
 	sf::Vector2f unit2Pos = gameMap_.tileToPixelCenter(10, 7);
 	if (gameMap_.isWalkable(10, 7))
 	{
-		unitManager_.addUnit(UnitType::TANK, Faction::ENEMY, unit2Pos);
+		unitManager_.addUnit(UnitType::TANK, Faction::ENEMY, unit2Pos, tankStats);
 		std::cout << "Added ENEMY TANK at tile (10,7) -> pixel " << unit2Pos.x << "," << unit2Pos.y << std::endl;
 	}
 	else
@@ -52,11 +54,11 @@ void Game::setupInitialUnits()
 	}
 
 
-	// Example: Place another friendly unit
+	//Unit3
 	sf::Vector2f unit3Pos = gameMap_.tileToPixelCenter(5, 11);
 	if (gameMap_.isWalkable(5, 11))
 	{
-		unitManager_.addUnit(UnitType::INFANTRY, Faction::ENEMY, unit3Pos);
+		unitManager_.addUnit(UnitType::INFANTRY, Faction::ENEMY, unit3Pos, infantryStats);
 		std::cout << "Added FRIENDLY INFANTRY at tile (5,11) -> pixel " << unit3Pos.x << "," << unit3Pos.y << std::endl;
 	}
 	else
@@ -87,7 +89,7 @@ void Game::run()
 void Game::processEvents()
 {
 
-	while (const auto optEvent = window_.pollEvent())
+	while (const auto& optEvent = window_.waitEvent())
 	{
 		if (optEvent->is<sf::Event::Closed>() ||
 			(optEvent->is<sf::Event::KeyPressed>() && optEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Escape))
@@ -108,7 +110,7 @@ void Game::processEvents()
 		{
 			if (const auto* mouseButtonData = optEvent->getIf<sf::Event::MouseButtonPressed>())
 			{
-				sf::Vector2i pixelPos = {mouseButtonData->position.x, mouseButtonData->position.y};
+				sf::Vector2i pixelPos{mouseButtonData->position.x, mouseButtonData->position.y};
 				// Convert pixelPos to world coordinates if you use a view/camera
 				// For now, assuming 1:1 view:
 				sf::Vector2f worldPos(static_cast<float>(pixelPos.x), static_cast<float>(pixelPos.y));
@@ -140,10 +142,36 @@ void Game::processEvents()
 				}
 				else if (mouseButtonData->button == sf::Mouse::Button::Right)
 				{
-					if (selectedUnit_)
+					if (selectedUnit_ == nullptr || !selectedUnit_->isAlive())
+						continue;
+
+					sf::Vector2f targetPos(static_cast<float>(pixelPos.x), static_cast<float>(pixelPos.y));
+
+					Unit* targetUnit = nullptr;
+					// Check if the click was on another unit
+					const auto& allUnits = unitManager_.getAllUnits();
+					for (const auto& unitPtr : allUnits)
 					{
-						sf::Vector2f targetPos(static_cast<float>(pixelPos.x), static_cast<float>(pixelPos.y));
-						selectedUnit_->setCommand(std::make_unique<MoveCommand>(targetPos));
+						if (unitPtr && unitPtr.get() != selectedUnit_ && unitPtr->isAlive() && unitPtr->getBounds().contains(worldPos))
+						{
+							targetUnit = unitPtr.get();
+							break;
+						}
+					}
+
+
+					if (targetUnit && selectedUnit_->getFaction() != targetUnit->getFaction()) // Clicked on an enemy/different faction unit
+					{
+						selectedUnit_->setCommand(std::make_unique<AttackCommand>(targetUnit));
+					}
+					else if (!targetUnit || targetUnit == selectedUnit_ || selectedUnit_->getFaction() == targetUnit->getFaction()) // Clicked on empty space, self, or friendly unit: issue MoveCommand
+					{
+						sf::Vector2i targetTileCoords{gameMap_.pixelToTile(worldPos)};
+						if (gameMap_.isValidCoordinate(targetTileCoords.x, targetTileCoords.y) && gameMap_.isWalkable(targetTileCoords.x, targetTileCoords.y))
+						{
+							sf::Vector2f targetPixelPosAtTileCenter{gameMap_.tileToPixelCenter(targetTileCoords.x, targetTileCoords.y)};
+							selectedUnit_->setCommand(std::make_unique<MoveCommand>(targetPixelPosAtTileCenter));
+						}
 					}
 				}
 			}
@@ -153,16 +181,18 @@ void Game::processEvents()
 
 void Game::update(sf::Time deltaTime)
 {
-	// For current phase, units don't have individual update logic yet,
-	// but we call it for consistency and future expansion.
-	unitManager_.updateAllUnits(deltaTime.asSeconds());
+	auto dt{deltaTime.asSeconds()};
+
+	unitManager_.processAI(dt);
+	unitManager_.updateAllUnits(dt);
+	unitManager_.cleanupDestroyedUnits();
 }
 
 void Game::render()
 {
 	window_.clear(sf::Color(20, 20, 20));
 
-	// Draw game elements in order (background to foreground)
+	// Draw elements in order (background to foreground)
 	gameMap_.draw(window_);
 	unitManager_.drawAllUnits(window_);
 

@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AttackCommand.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -143,6 +144,7 @@
     <ClCompile Include="UnitManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AttackCommand.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Game.h" />

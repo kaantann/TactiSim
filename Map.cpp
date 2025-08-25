@@ -54,7 +54,6 @@ void Map::initializeGrid()
         {
             TileType type = TileType::GRASS;
 
-            // Add some variety for testing
             if (x == 0 || y == 0 || x == mapSizeInTiles_.x - 1 || y == mapSizeInTiles_.y - 1)
                 type = TileType::OBSTACLE; // Border
             else if ((x % 5 == 0) && (y % 4 == 0))
@@ -71,7 +70,7 @@ void Map::initializeGrid()
             //In order to see the grid structure clearly
             auto grayish = sf::Color(30, 30, 30);
             shape.setOutlineColor(grayish);
-            shape.setOutlineThickness(-0.5f); // negative for inward outline
+            shape.setOutlineThickness(-0.5f); //Negative for inward outline
 
             tileVisuals_.push_back(shape);
         }

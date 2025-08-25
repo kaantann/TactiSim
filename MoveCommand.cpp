@@ -25,7 +25,7 @@ void MoveCommand::update(Unit& unit, float deltaTime)
     sf::Vector2f direction{targetDestination_ - currentPosition};
     float distance{std::sqrt(direction.x * direction.x + direction.y * direction.y)};
 
-    float movementThreshold{unit.getSpeed() * deltaTime * 0.5f}; // Stop if very close
+    float movementThreshold{unit.getSpeed() * deltaTime * 0.5f};
     if (distance < movementThreshold || distance < 1.0f)
     { // If very close or reached target
         unit.setPosition(targetDestination_); // Snap to exact target
