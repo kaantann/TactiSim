@@ -47,28 +47,12 @@ TactiSim is a C++ project designed to simulate 2D tactical scenarios. It allows 
     git clone https://github.com/your-username/TactiSim.git
     cd TactiSim
     ```
+    
+2.  **Build the Solution:**
+    *   From the Visual Studio menu, select `Build > Build Solution`.
 
-2.  **Open the Solution in Visual Studio:**
-    *   Locate the Visual Studio Solution file (`.sln`) in the root directory (or a relevant subdirectory if you create one, e.g., `TactiSim.sln`).
-    *   Double-click the `.sln` file to open it in Visual Studio.
-    *   *(If you haven't created a solution/project yet, you'll need to create a new C++ project in Visual Studio and add your source files to it.)*
-
-3.  **Configure Project Properties (First-time setup for dependencies):**
-    *   Right-click on your project in the Solution Explorer (e.g., "TactiSim") and select "Properties".
-    *   **C/C++ -> General -> Additional Include Directories:** Add paths to the header files of your external libraries (SFML, etc.).
-    *   **Linker -> General -> Additional Library Directories:** Add paths to the `.lib` files of your external libraries.
-    *   **Linker -> Input -> Additional Dependencies:** Add the names of the `.lib` files (e.g., `sfml-graphics-d.lib`, `sfml-window-d.lib`, `sfml-system-d.lib` for SFML debug).
-    *   Ensure you configure these for both Debug and Release configurations.
-
-4.  **Select Build Configuration:**
-    *   In Visual Studio, choose your desired build configuration (e.g., "Debug" or "Release") and platform (e.g., "x64" or "x86").
-
-5.  **Build the Solution:**
-    *   From the Visual Studio menu, select `Build > Build Solution` (or press `Ctrl+Shift+B`).
-
-6.  **Run the Executable:**
-    *   You can run the project directly from Visual Studio by pressing `F5` (Start Debugging) or `Ctrl+F5` (Start Without Debugging).
-    *   Alternatively, the executable (`.exe`) will be located in a subdirectory like `x64/Debug/`, `x64/Release/`, `Win32/Debug/`, or `Win32/Release/` relative to your solution or project directory.
+3.  **Run the Executable:**
+    *   The executable will be located in a subdirectory like `x64/Debug/`, `x64/Release/`, `Win32/Debug/`, or `Win32/Release/` relative to your solution or project directory.
 
 ## 🤝 Contribution
 
