@@ -61,3 +61,10 @@ Currently, this is a solo project for learning and demonstration purposes. Feedb
 ## 📜 License
 
 This project is licensed under the MIT License.
+
+## Some Prototype Resources
+![image](https://i.imgur.com/E3Fjl6j.png)
+
+![gif](https://i.imgur.com/4mTODGz.gif)
+
+
