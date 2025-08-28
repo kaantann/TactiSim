@@ -9,8 +9,8 @@ Game::Game() :
 	gameMap_{MAP_TILES_X, MAP_TILES_Y, TILE_SIZE},
 	unitManager_{}
 {
-	// Can limit framerate for smoother updates and less CPU usage - off for now
-	// window_.setFramerateLimit(60);
+	// Can limit framerate for smoother updates and less CPU usage
+	 window_.setFramerateLimit(60);
 
 	// Enable vertical sync
 	// window_.setVerticalSyncEnabled(true);
