@@ -89,7 +89,7 @@ void Game::run()
 void Game::processEvents()
 {
 
-	while (const auto& optEvent = window_.waitEvent())
+	while (const auto& optEvent = window_.pollEvent())
 	{
 		if (optEvent->is<sf::Event::Closed>() ||
 			(optEvent->is<sf::Event::KeyPressed>() && optEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Escape))
